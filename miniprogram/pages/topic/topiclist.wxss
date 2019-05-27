@@ -1,1 +1,4 @@
 /* pages/topic/topiclist.wxss */
+.btns{
+  text-align: right;
+}

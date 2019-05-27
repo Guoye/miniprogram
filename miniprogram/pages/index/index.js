@@ -1,5 +1,6 @@
 //index.js
 const app = getApp()
+const db = wx.cloud.database()
 
 Page({
   data: {
@@ -31,6 +32,8 @@ Page({
                 avatarUrl: res.userInfo.avatarUrl,
                 userInfo: res.userInfo
               })
+
+              this.onGetOpenid();
             }
           })
         }
@@ -58,18 +61,70 @@ Page({
         console.log(res);
         
         console.log('[云函数] [login] user openid: ', res.result.openid)
-        app.globalData.openid = res.result.openid
-        wx.navigateTo({
-          url: '../userConsole/userConsole',
-        })
+        app.globalData.openid = res.result.openid;
+        
+        this.getEmployee(app.globalData.openid);
+        // wx.navigateTo({
+        //   url: '../userConsole/userConsole',
+        // })
       },
       fail: err => {
         console.error('[云函数] [login] 调用失败', err)
-        wx.navigateTo({
-          url: '../deployFunctions/deployFunctions',
-        })
+        // wx.navigateTo({
+        //   url: '../deployFunctions/deployFunctions',
+        // })
       }
     })
+  },
+
+  getEmployee(openid){
+    db.collection('employee').where({
+      _openid: openid
+    }).get()
+    .then(res => {
+      if(!res.data.length){
+        this.saveUser()
+      }
+    })
+    .catch(error=>{
+      console.error(error)
+    })
+  },
+  /**
+   * 保存用户
+   */
+  saveUser() {
+    db.collection('employee').add({
+      // data 字段表示需新增的 JSON 数据
+      data: {
+        nickName: this.data.userInfo.nickName,
+        avatarUrl: this.data.avatarUrl,
+        createTime: db.serverDate(),
+        lastEditTime: db.serverDate(),
+        enabled: 1
+      }
+    })
+      .then(res => {
+        console.log(res)
+        this.saveRole();
+      })
+      .catch(console.error)
+  },
+
+  /**
+   * 配置用户角色
+   */
+  saveRole() {
+    db.collection('employee-role').add({
+      // data 字段表示需新增的 JSON 数据
+      data: {
+        roleCode: 1
+      }
+    })
+      .then(res => {
+        console.log(res)
+      })
+      .catch(console.error)
   },
 
   // 上传图片

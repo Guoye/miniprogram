@@ -156,6 +156,15 @@ page {
   word-break: break-all;
 }
 
+
+/**
+**
+*/
+.require{
+  color: red;
+}
+
+
 /*!
  * WeUI v1.1.1 (https://github.com/weui/weui-wxss)
  * Copyright 2017 Tencent, Inc.

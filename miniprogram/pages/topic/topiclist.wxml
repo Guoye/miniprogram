@@ -1,7 +1,10 @@
-<view class="weui-panel">
-  <view class="weui-panel__hd">文字列表附来源</view>
-  
-  <view class="weui-panel__bd" wx:for="{{list}}" bindtap='goPage' data-id="{{item._id}}">
+<view class="btns">
+  <button class="weui-btn mini-btn" type="primary" size="mini" bindtap='addTopic'>新增活动</button>
+</view>
+<view class="weui-panel"  wx:for="{{list}}" bindtap='goPage' data-id="{{item._id}}">
+  <!-- <view class="weui-panel__hd">文字列表附来源</view> -->
+
+  <view class="weui-panel__bd">
     <view class="weui-media-box weui-media-box_text">
       <view class="weui-media-box__title weui-media-box__title_in-text">{{item.title}}</view>
       <view class="weui-media-box__desc">{{item.mark}}</view>

@@ -17,6 +17,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log('onLoad')
     this.getOpenId();
     this.getUserInfomation();
   },
@@ -25,28 +26,31 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    console.log('onReady')
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    if(this.data.openid){
+      console.log('========onShow')
+      this.getList();
+    }
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
+    console.log('onHide')
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+    console.log('onUnload')
   },
 
   /**
@@ -74,6 +78,9 @@ Page({
    * 获取当前用户openid
    */
   getOpenId() {
+    wx.showLoading({
+      title: '加载中...',
+    })
     wx.cloud.callFunction({
       // 要调用的云函数名称
       name: 'login',
@@ -85,6 +92,7 @@ Page({
         this.setData({
           openid: res.result.openid
         });
+        wx.hideLoading();
         this.getList();
       },
       fail: err => {
@@ -124,13 +132,20 @@ Page({
    * 获取当前用户活动列表
    */
   getList(){
+    wx.showLoading({
+      title: '加载中...',
+    })
     dbCollection.where({
-      _openid: this.data.openid
-    }).get().then(resp=>{
+      _openid: this.data.openid,
+      enabled: 1
+    }).orderBy('lastEditTime', 'desc')
+      .orderBy('createTime', 'desc')
+    .get().then(resp=>{
       console.log(resp)
       this.setData({
         list: resp.data
       })
+      wx.hideLoading();
     }).catch(error => {
       console.error(error)
     })
@@ -141,9 +156,19 @@ Page({
    */
   goPage(event){
     console.log(event)
-    const id = event.currentTarget.dataset.id;
+    let id = '';
+    if(event){
+      id = '?id=' + event.currentTarget.dataset.id;
+    }
     wx.navigateTo({
-      url: './topic?id='+id,
+      url: './topic'+id,
     })
+  },
+
+  /**
+   * 新增活动
+   */
+  addTopic() {
+    this.goPage();
   }
 })

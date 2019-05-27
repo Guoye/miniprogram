@@ -2,7 +2,7 @@
   <view class="weui-cells weui-cells_after-title">
     <view class="weui-cell weui-cell_input">
       <view class="weui-cell__hd">
-        <view class="weui-label">标题</view>
+        <view class="weui-label"><span class="require">*</span>标题</view>
       </view>
       <view class="weui-cell__bd">
         <input name="title" class="weui-input" value="{{title}}" placeholder="请输入标题" />
@@ -10,7 +10,15 @@
     </view>
     <view class="weui-cell weui-cell_input">
       <view class="weui-cell__hd">
-        <view class="weui-label">截止日期</view>
+        <view class="weui-label"><span class="require">*</span>名额</view>
+      </view>
+      <view class="weui-cell__bd">
+        <input name="luckyNumber" class="weui-input" value="{{luckyNumber}}" placeholder="请输入整数中奖名额" />
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+      <view class="weui-cell__hd">
+        <view class="weui-label"><span class="require">*</span>截止日期</view>
       </view>
       <view class="weui-cell__bd">
         <picker name="endDate" mode="date" value="{{endDate}}" start="2019-05-01" end="2079-05-01" bindchange="bindDateChange">
@@ -18,7 +26,7 @@
         </picker>
       </view>
     </view>
-    <view class="weui-cell weui-cell_input">
+    <!-- <view class="weui-cell weui-cell_input">
       <view class="weui-cell__hd">
         <view class="weui-label">发布日期</view>
       </view>
@@ -27,14 +35,24 @@
           <view class="weui-input">{{pubDate}}</view>
         </picker>
       </view>
+    </view> -->
+    <!-- wx:if="{{isCreate == true}}" -->
+     <view  class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_switch">
+            <view class="weui-cell__bd">立即发布</view>
+            <view class="weui-cell__ft">
+                <switch name="isPublish"/>
+            </view>
+        </view>
     </view>
+
   </view>
   <view class="weui-cells__title">活动介绍</view>
   <view class="weui-cells weui-cells_after-title">
     <view class="weui-cell">
       <view class="weui-cell__bd">
         <textarea name="mark" class="weui-textarea" placeholder="请输入文本" style="height: 4.3em" value="{{mark}}"/>
-        <view class="weui-textarea-counter">0/200</view>
+        <!-- <view class="weui-textarea-counter">0/200</view> -->
       </view>
     </view>
   </view>
@@ -43,7 +61,7 @@
     <view class="weui-cell">
       <view class="weui-cell__bd">
         <textarea name="mark2" class="weui-textarea" placeholder="请输入文本" style="height: 4.3em" value="{{mark2}}"/>
-        <view class="weui-textarea-counter">0/200</view>
+        <!-- <view class="weui-textarea-counter">0/200</view> -->
       </view>
     </view>
   </view>
