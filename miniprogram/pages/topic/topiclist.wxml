@@ -11,7 +11,7 @@
       <view class="weui-media-box__info">
         <view class="weui-media-box__info__meta">截止时间：</view>
         <view class="weui-media-box__info__meta">{{item.endDate}}</view>
-        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">其它信息</view>
+        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.isPublish ? '已发布' : '未发布'}}</view>
       </view>
     </view>
   </view>

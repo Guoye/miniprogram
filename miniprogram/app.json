@@ -1,5 +1,6 @@
 {
   "pages": [
+    "tabs/tab1/tab1",
     "pages/index/index",
     "pages/userConsole/userConsole",
     "pages/storageConsole/storageConsole",
@@ -13,7 +14,24 @@
     "pages/openapi/cloudid/cloudid",
     "pages/topic/topic",
     "pages/topic/topiclist"
+    
   ],
+  "tabBar": {
+    "custom": true,
+    "color": "#000000",
+    "selectedColor": "#000000",
+    "backgroundColor": "#000000",
+    "list": [
+      {
+        "pagePath": "tabs/tab1/tab1",
+        "text": "组件"
+      },
+      {
+        "pagePath": "tabs/tab1/tab1",
+        "text": "接口"
+      }
+    ]
+  },
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",

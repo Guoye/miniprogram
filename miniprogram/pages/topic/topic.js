@@ -161,7 +161,8 @@ Page({
     const postData = { ...{
         createTime: db.serverDate(),
       lastEditTime: db.serverDate(),
-        enabled: 1
+        enabled: 1,
+        type: 1
       },
       ...e.detail.value
     }
@@ -185,7 +186,7 @@ Page({
 
         // 添加到首页
         if (postData.isPublish){
-          this.updateToHome(res._id);
+          this.addToExplore(res._id);
         }
 
       })
@@ -222,44 +223,77 @@ Page({
         }
       })
 
-      // 添加到首页
-      if (postData.isPublish) {
-        this.updateToHome(resp._id);
-      }
+      // 更新首页
+      this.updateToExplore(this.data._id, postData.isPublish);
+      
+
     }).catch(error => {
       console.log(error)
     })
   },
 
   /**
+   * 添加到首页
+   */
+  addToExplore(topicId) {
+    db.collection('home').add({
+      data: {
+        topicId: topicId,
+        createTime: db.serverDate(),
+        lastEditTime: db.serverDate(),
+        enabled: 1,
+        type: 1
+      }
+    })
+    .then( res => {
+      console.log(res)
+    })
+    .catch( error => {
+      console.error(error)
+    })
+  },
+
+  /**
+   * 更新数据
+   */
+  updateHomeRow(docId, isPublish) {
+    const enabled = isPublish ? 1 : 0;
+    db.collection('home').doc(docId).update({
+      data: {
+        enabled: enabled,
+        lastEditTime: db.serverDate()
+      }
+    })
+      .then(res => {
+        console.log(res)
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  },
+
+  /**
    * 更新到首页
    */
-  updateToHome(topicId) {
-    // // 查找
-    // db.collection('home').where({
-    //   type: 'topic'
-    // }).get().then(res => {
-    //   console.log(res)
-    //   if (!res.data.length) return;
-
-    //   const docId = res.data[0]._id;
-    //   console.log(docId)
-      
-    //   // 更新
-    //   db.collection('home').doc(docId)
-    //     .update({
-    //       data: {
-    //         topicIds: [topicId]
-    //       },
-    //     })
-    //     .then(res2 => {
-    //       console.log(res2)
-    //     })
-    //     .catch(error => {
-    //       console.error(error)
-    //     })
-    // })
-  
+  updateToExplore(topicId, isPublish) {
+    // 查找
+    db.collection('home').where({
+      topicId: topicId
+    }).get()
+      .then(res => {
+        console.log(res)
+        if (res.data.length){
+          // 更新
+          const docId = res.data[0]._id;
+          this.updateHomeRow(docId, isPublish);
+        } else {
+          // 新增
+          this.addToExplore(topicId);
+        }
+      })
+      .catch(error => {
+        console.error(error)
+      })
   },
 
   /**

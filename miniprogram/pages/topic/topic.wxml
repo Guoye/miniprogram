@@ -41,7 +41,7 @@
         <view class="weui-cell weui-cell_switch">
             <view class="weui-cell__bd">立即发布</view>
             <view class="weui-cell__ft">
-                <switch name="isPublish"/>
+                <switch name="isPublish" checked="{{isPublish}}"/>
             </view>
         </view>
     </view>
